@@ -10,7 +10,7 @@ const {NotImplementedError} = require('../extensions/index.js');
 function TreeNode(data) {
     this.data = data;
     this.left = null;
-    this.right = null
+    this.right = null;
 }
 
 module.exports = class BinarySearchTree {
@@ -56,7 +56,7 @@ module.exports = class BinarySearchTree {
 
     has(data) {
         const res = this.doFind(this._root, data);
-        console.log('has(' +  data + '):' + (res !== null));
+        console.log('has(' + data + '):' + (res !== null));
         return res !== null;
     }
 
@@ -66,9 +66,33 @@ module.exports = class BinarySearchTree {
         return res;
     }
 
-    remove(/* data */) {
-        throw new NotImplementedError('Not implemented');
-        // remove line with error and write your code here
+    deleteMin(node) {
+        if (node.left == null) return node.right;
+        node.left = this.deleteMin(node.left);
+        return node;
+    }
+
+    doRemove(node, data) {
+        if (!node) return null;
+        if (node.data > data) node.left = this.doRemove(node.left, data);
+        else if (node.data < data) node.right = this.doRemove(node.right, data);
+        else {
+            if (!node.right) return node.left;
+            if (!node.left) return node.right;
+            const tmpNode = node;
+            node = this.getMin(tmpNode.right);
+            node.right = this.deleteMin(tmpNode.right);
+            node.left = tmpNode.left;
+        }
+        console.log('doRemove(' + node.data + ')');
+        return node;
+    }
+
+    remove(data) {
+        const node = this.find(data);
+        if (node) {
+            this.doRemove(node, data);
+        }
     }
 
     getMin(node) {
