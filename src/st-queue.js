@@ -1,5 +1,4 @@
 const {NotImplementedError} = require('../extensions/index.js');
-import('/extensions/list-node');
 // const { ListNode } = require('../extensions/list-node.js');
 
 /**
@@ -13,6 +12,12 @@ import('/extensions/list-node');
  * queue.dequeue(); // returns the top element from queue and deletes it, returns 1
  * queue.getUnderlyingList() // returns { value: 3, next: null }
  */
+
+ListNode = function (x) {
+    this.value = x;
+    this.next = null;
+}
+
 module.exports = class Queue {
     constructor(list) {
         this._list = null;
